@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style> 
+	.active {
+		color:blue;
+	}
+</style>
+</head>
+<body>
+	<h2>Menu</h2>
+	<ul	id="links">
+		<li data-lat="30" data-long="50" data-name="Art Room" class="link active">Art Room</li>
+		<li data-lat="80" data-long="80" data-name="Music Room"  class="link">Music Room</li>
+		<li data-lat="180" data-long="90" data-name="A Block"  class="link">A Block</li>
+		<li data-lat="150" data-long="190" data-name="B Block"  class="link">B Block</li>
+	</ul>
+	<canvas id="canvas" width="500" height="300" >
+	  Your browser does not support the canvas element.
+	</canvas>
+	
+	<script>
+			var can = document.getElementById('canvas');
+			var menuitems = document.querySelectorAll('li.link');
+		    ctx = canvas.getContext("2d");
+		    let bgImg = new Image();
+			bgImg.src = './image.jpg';
+			bgImg.onload = () => {
+				ctx.drawImage(bgImg, 0, 0, can.width, can.height);
+			}
+			
+			if(menuitems){
+				menuitems.forEach((link) => {
+					link.addEventListener('click', () => {
+						var lat = link.dataset.lat; 
+						var lon = link.dataset.long; 
+						var name = link.dataset.name;
+						let locImg = new Image();
+						locImg.src = './location.jpg';
+						locImg.onload = () => {
+							ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+							ctx.drawImage(bgImg, 0, 0, can.width, can.height);
+									ctx.drawImage(locImg, lat, lon, 50, 50);
+							var text = parseInt(lat) + 25;
+							ctx.font = "12px sans-serif";
+							ctx.fillStyle = 'blue';
+							ctx.strokeText(name, text, lon );
+						}
+						removeActive();
+						link.classList.add("active");
+					});
+				});
+			}
+			function removeActive(){
+				menuitems.forEach((link) => {
+					link.classList.remove("active");
+				});
+			}
+	</script>
+</body>
+</html>
